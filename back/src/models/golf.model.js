@@ -22,5 +22,5 @@ const golfSchema = new Schema({
         type: String,
         required: true
     }
-);
+});
 module.exports = mongoose.model('Golf', golfSchema);

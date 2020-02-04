@@ -26,5 +26,5 @@ const managerSchema = new Schema({
     golf_id: {
         type: String
     }
-);
+});
 module.exports = mongoose.model('Manager', managerSchema);
