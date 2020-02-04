@@ -58,3 +58,16 @@ exports.findById = (req,res) => {
 		})
 	})
 }
+
+// LIRE TOUS LES MANAGERS
+exports.findAll = (req, res) => {
+	Manager.find()
+	.then(managers =>{
+		res.send(managers);
+	})
+	.catch(err => {
+		res.status(500).send({
+			message:err.message || "Some error occured when finding managers."
+		})
+	})
+}

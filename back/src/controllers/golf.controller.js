@@ -75,3 +75,18 @@ exports.findById = (req,res) => {
 	})
 }
 
+// LIRE TOUS LES GOLFS
+
+exports.findAll = (req, res) => {
+	Golf.find()
+	.then(golfs =>{
+		res.send(golfs);
+	})
+	.catch(err => {
+		res.status(500).send({
+			message:err.message || "Some error occured when finding golfs."
+		})
+	})
+}
+
+
