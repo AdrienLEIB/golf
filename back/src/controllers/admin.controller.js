@@ -5,18 +5,19 @@ const config = require('../configs/jwt.config');
 
 exports.create = (req,res) => {
 	let hashedPassword = bcrypt.hashSync(req.body.password, 8);
-	const auth = new Auth({
-		email: req.body.email,
+	const admin = new Admin({
+		name: req.body.name,
+		surname: req.body.surname,
+		role: req.body.role,
 		password: hashedPassword,
-		firstname: req.body.firstname,
-		lastname: req.body.lastname,
+		email: req.body.email,
 		admin: req.body.admin
 	})
-	auth.save().then(data=>{
-		let authToken = jwt.sign(
+	admin.save().then(data=>{
+		let adminToken = jwt.sign(
 			{
-			id: auth.email, 
-			admin: auth.admin
+				id: admin.email, 
+				admin: admin.admin
 			},
 			config.secret,
 			{
@@ -24,11 +25,11 @@ exports.create = (req,res) => {
 			}
 		)
 		res.send({
-			auth: true,
-			token: authToken,
+			admin: true,
+			token: adminToken,
 			body: {
 				email: data.email,
-				firstname: data.firstname,
+				name: data.name,
 				password: data.password
 			}
 		});
@@ -39,7 +40,7 @@ exports.create = (req,res) => {
 	})
 }
 
-// Connecter un auth
+// Connecter un admin 
 exports.login = (req,res) => {
 
 	// requete -> findOne
@@ -48,16 +49,16 @@ exports.login = (req,res) => {
 	//etape1: rechercher en base le user avec le mail
 	//etape2: vérifier si mot pas de passe reçu = mot de passe en base
 	//etape3 : générer un nouveau token et on l'envoie dans la reponse
-	Auth.findOne( {email: req.body.email}, (err, auth) =>{
+	Admin.findOne( {email: req.body.email}, (err, admin) =>{
 		if(err){
 			console.log(err)
 		}
 		else{
-			if(bcrypt.compareSync(req.body.password, auth.password)){
-				let authToken = jwt.sign(
+			if(bcrypt.compareSync(req.body.password, admin.password)){
+				let adminToken = jwt.sign(
 								{
-								id: auth.email, 
-								admin: auth.admin
+								id: admin.email, 
+								admin: admin.admin
 								},
 								config.secret,
 								{
@@ -65,8 +66,8 @@ exports.login = (req,res) => {
 								}
 							)
 							res.send({
-								auth: true,
-								token: authToken
+								admin: true,
+								token: adminToken
 							}
 						);	
 			}
@@ -78,29 +79,29 @@ exports.login = (req,res) => {
 }
 
 exports.login2 = (req,res) => {
-	Auth.findOne({email: req.body.email},
-		function(err, auth){
+	Admin.findOne({email: req.body.email},
+		function(err, admin){
 			// si aucun user
-			if(!auth) return res.status(404).send("No auth found");
+			if(!admin) return res.status(404).send("No admin found");
 			//comparaisons des mdp
-			let passwordIsValid = bcrypt.compareSync(req.body.password, auth.password);
+			let passwordIsValid = bcrypt.compareSync(req.body.password, admin.password);
 			//check si la comparaison est True
 			if(!passwordIsValid) return res.status(401).send({
-				auth: false,
+				admin: false,
 				token: null
 			});
 			//On genere le token grace à la méthode sign
 			let token = jwt.sign({
-				id: auth._id,
-				admin: auth.admin,
-				data: auth
+				id: admin._id,
+				admin: admin.admin,
+				data: admin
 			},
 			config.secret, {
 				expiresIn: 86400
 			}
 			);
 			res.status(200).send({
-				auth: true,
+				admin: true,
 				token: token
 			})
 		}
