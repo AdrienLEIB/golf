@@ -7,11 +7,11 @@ const golfSchema = new Schema({
         required: true	
 	},
 	latitude:{
-        type: Float,
+        type: Number,
         required: true		
 	},
 	longitude:{
-        type: Float,
+        type: Number,
         required: true		
 	},
     description: {
@@ -20,6 +20,10 @@ const golfSchema = new Schema({
     },
     manager_id: {
         type: String,
+        required: true
+    },
+    manager:{
+        type:Boolean,
         required: true
     }
 });

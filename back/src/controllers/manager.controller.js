@@ -1,23 +1,49 @@
 const Manager = require('../models/manager.model');
+const Golf = require('../models/golf.model');
 
 //CREER UN MANAGER
 exports.create = (req,res) => {
-	const manager = new Manager({
-		name: req.body.name,
-		surname: req.body.surname,
-		email: req.body.email,
-		telephone: req.body.telephone,
-        golf: req.body.golf,
-        golf_id: req.body.golf_id
-        
-	})
-	manager.save().then(data=>{
-		res.send(data);
-	}).catch(err =>{
-		res.status(500).send({
-			message: err.message
+
+	if(req.body.golf_id){
+		Golf.findById(req.body.golf_id)
+			.then(golf =>{
+				if(golf.manager==false){
+					const manager = new Manager({
+						name: req.body.name,
+						surname: req.body.surname,
+						email: req.body.email,
+						telephone: req.body.telephone,
+				        golf: true,
+				        golf_id: req.body.golf_id
+			        })					
+				}
+				else{
+					res.send("Golf has already a manager")
+				}
+			})
+		.catch(err =>{
+			res.status(500).send({
+				message:err.message || "Some error occured when finding golf."
+			})
 		})
-	})
+	}
+	else{
+		const manager = new Manager({
+			name: req.body.name,
+			surname: req.body.surname,
+			email: req.body.email,
+			telephone: req.body.telephone,
+	        golf: false
+	        
+		})
+		manager.save().then(data=>{
+			res.send(data);
+		}).catch(err =>{
+			res.status(500).send({
+				message: err.message
+			})
+		})		
+	}
 }
 
 // SUPPRIMER UN MANAGER

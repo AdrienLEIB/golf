@@ -7,7 +7,7 @@ const managerSchema = new Schema({
         required: true	
 	},
 	surname:{
-        type: Float,
+        type: String,
         required: true		
 	},
     email: {
