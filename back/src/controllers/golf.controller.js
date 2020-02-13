@@ -4,21 +4,20 @@ const Manager = require('../models/manager.model');
 // CREER UN GOLF
 exports.create = (req,res) => {
 
-	if(req.body.manager_id){
+	if("manager_id" in req.body){
 	    Manager.findById(req.body.manager_id)
 	    .then(manager =>{
-	    	if(!manager.golf){
+	    	if(manager.golf_id==null){
 				const golf = new Golf({
 						title: req.body.title,
 						latitude: req.body.latitude,
 						longitude: req.body.longitude,
 						description: req.body.description,
-						manager_id: req.body.manager_id,
-						manager: true
+						manager_id: req.body.manager_id
 					})
 					golf.save().then(data=>{
 
-						Manager.findOneAndUpdate( {_id:req.body.manager_id}, {golf_id:data._id , golf:true})
+						Manager.findByIdAndUpdate( {_id:req.body.manager_id}, {golf_id:data._id})
 							.then(manager =>{
 								res.send(data);
 							})
@@ -52,8 +51,131 @@ exports.create = (req,res) => {
 // METTRE A JOUR UN GOLF
 exports.findOneAndUpdate = (req,res) => {
 
-	if(!req.body.manager){
-		if(req.body.manager_id){
+	console.log(req.body);
+
+	if("manager_id" in req.body){
+		if((req.body.manager_id == "") || (req.body.manager_id==null)){
+			res.status(500).send("Golf can't without Manager");			
+		}else{
+			Golf.findById( req.params.id )
+				.then(golf =>{
+					if (req.body.manager_id==golf.manager_id){
+						Golf.findByIdAndUpdate( {_id:req.params.id}, req.body)
+						.then(golf =>{
+											Golf.findById(req.params.id)
+										            .then(newUser => {
+										                res.send({
+										                    new_golf: newUser,
+										                    old_golf: golf
+										                });
+								  					})
+						})
+						.catch(err =>{
+							res.status(500).send({
+								message:err.message || "Some error occured when finding golf."
+							})
+						})				
+					}
+					else{
+						Manager.findById(req.body.manager_id)
+						.then(manager =>{
+								if(manager.golf_id==null){
+									Golf.findByIdAndUpdate( {_id:req.params.id}, req.body)
+									.then(golf =>{
+										Manager.findByIdAndUpdate( {_id:req.body.manager_id}, {golf_id:golf._id})
+											.then(manager =>{
+												Golf.findById(req.params.id)
+										            .then(newUser => {
+										                res.send({
+										                    new_golf: newUser,
+										                    old_golf: golf
+										                });
+								  					})
+											})
+											.catch(err =>{
+												res.status(500).send({
+													message:err.message || "Some error occured when finding manager."
+											})
+										})				
+									})
+									.catch(err =>{
+										res.status(500).send({
+											message:err.message || "Some error occured when finding golf."
+										})
+									})						
+								}
+								else{
+									res.status(500).send("Sorry Manager was used")
+								}
+						})
+						.catch(err =>{
+							res.status(500).send({
+								message:err.message || "Some error occured when finding golf."
+							})
+						})
+					}
+				})
+			.catch(err =>{
+				res.status(500).send({
+					message:err.message || "Some error occured when finding golf."
+				})
+			})
+		}
+	}else{
+		Golf.findByIdAndUpdate( {_id:req.params.id}, req.body)
+			.then(golf =>{
+											Golf.findById(req.params.id)
+										            .then(newUser => {
+										                res.send({
+										                    new_golf: newUser,
+										                    old_golf: golf
+										                });
+								  					})
+			})
+			.catch(err =>{
+				res.status(500).send({
+					message:err.message || "Some error occured when finding golf."
+				})
+		})
+	}
+}
+	/*if(!req.body.manager){
+		if((req.body.manager_id) && (req.body.manager_id=="")){
+
+			Golf.findOneAndUpdate( {_id:req.params.id}, {manager:false})
+			.then(golf =>{
+				console.log(golf_id + " Update")			
+			})
+			.catch(err =>{
+				res.status(500).send({
+					message:err.message || "Some error occured when finding golf."
+				})
+			})
+
+			Golf.findOneAndUpdate( {_id:req.params.id}, req.body)
+			.then(golf =>{
+				if(golf.manager){
+					Manager.findOneAndUpdate( {_id:req.body.manager_id}, {golf_id:golf._id , golf:false})
+					.then(manager =>{
+						res.send(golf);
+					})
+					.catch(err =>{
+						res.status(500).send({
+							message:err.message || "Some error occured when finding manager."
+						})
+					})					
+				}else{
+					res.send(golf)
+				}				
+			})
+			.catch(err =>{
+				res.status(500).send({
+					message:err.message || "Some error occured when finding golf."
+				})
+			})	
+
+		}
+		if((req.body.manager_id) && (req.body.manager_id!=null)){
 			Manager.findById(req.body.manager_id)
 			.then(manager =>{
 					if(!manager.golf){
@@ -79,6 +201,11 @@ exports.findOneAndUpdate = (req,res) => {
 						res.status(500).send("Sorry Manager was used")
 					}
 			})
+			.catch(err =>{
+				res.status(500).send({
+					message:err.message || "Some error occured when finding golf."
+				})
+			})
 		}
 		else{
 			Golf.findOneAndUpdate( {_id:req.params.id}, req.body)
@@ -92,14 +219,17 @@ exports.findOneAndUpdate = (req,res) => {
 			})
 		}
 	}
-}
+	else{
+		res.status(500).send("Can't change manager boolean")
+	}*/
+
 
 // SUPPRIMER UN GOLF
 exports.findOneAndRemove = (req, res) => {
 	Golf.findOneAndRemove({_id:req.params.id})
 	.then(golf =>{
-		if(golf.manager_id){
-			Manager.findOneAndUpdate( {_id:golf.manager_id}, {golf_id:null, golf:false})
+		if(golf.manager_id!=null){
+			Manager.findByIdAndUpdate( {_id:golf.manager_id}, {golf_id:null})
 				.then(manager =>{
 					
 				})

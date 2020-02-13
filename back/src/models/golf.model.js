@@ -21,10 +21,6 @@ const golfSchema = new Schema({
     manager_id: {
         type: String,
         required: true
-    },
-    manager:{
-        type:Boolean,
-        required: true
     }
 });
 module.exports = mongoose.model('Golf', golfSchema);

@@ -20,9 +20,6 @@ const managerSchema = new Schema({
         type: String,
         required: true
     },
-    golf:{
-        type:Boolean
-    },
     golf_id: {
         type: String
     }
