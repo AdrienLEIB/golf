@@ -6,6 +6,18 @@ const cors = require('cors');
 
 //Demarrer express
 const app = express();
+// front
+app.use(express.urlencoded({extented:true}));
+app.use(express.json());
+app.use(function(req,res,next){
+	res.setHeader("Content-type","application/json");
+	res.setHeader('Accept','application/json');
+	res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+	res.setHeader('Access-Control-Allow-Methods','GET, POST, PATCH, PUT, DELETE, OPTIONS');
+	res.setHeader('Access-Control-Allow-Headers','Origin, Accept, Content-Type, Authorization, Access-Control-Allow-Origin');
+	next();
+});
+
 
 // middleware
 app.use(bodyParser.json());
