@@ -8,3 +8,7 @@ Back
 - npm install mongoose --save
 - npm install bcrypt --save
 - npm install jsonwebtoken --save
+
+Front
+- npm install react-router-dom
+- npm i jwt-decode --save
