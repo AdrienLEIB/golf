@@ -3,10 +3,10 @@ const config = require('../configs/jwt.config');
 
 function verifyToken(req, res, next){
 	//1 ème étape : récuperer le token
-	let token = req.headers['x-access-token'];
+	let token = req.headers['token'];
 	if(!token){
 		return res.status(400).send({
-			auth: false,
+			admin: false,
 			message: "missing token"
 		})
 	}
@@ -14,7 +14,7 @@ function verifyToken(req, res, next){
 		if(err){
 			console.log(err);
 			return res.status(401).send({
-				auth:false,
+				admin:false,
 				message: "no authorized"
 			})
 		}

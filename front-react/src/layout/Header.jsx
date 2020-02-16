@@ -12,8 +12,8 @@ export default class Header extends Component {
 				<h1> <Link to='/'> <span>Golf </span></Link></h1>
 
 				<nav>
-					<Link to='/'>Liste des golfs</Link>
-					<Link to='/'>Ajouter un golf</Link>
+					<Link to='/golfs'>Liste des golfs</Link>
+					<Link to='/golf'>Ajouter un golf</Link>
 					<Link to='/'>Liste des managers</Link>
 					<Link to='/'>Ajouter un manager</Link>
 				</nav>
