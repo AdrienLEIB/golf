@@ -1,22 +1,37 @@
 import React from 'react';
 import AuthService from '../services/admin.service'
 
-export default class LoginForm extends React.Component {
-	constructor(){
-		super();
+export default class updateManager extends React.Component {
+	constructor(props){
+		super(props);
 		this.state = {
-			title: "",
-			latitude: "",
-            longitude: "",
-            description: "", 
-            manager_id: "",
+			name: "",
+			surname: "",
+            email: "",
+            telephone: "",
+            golf_id: ""
 		};
 		this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.Auth = new AuthService();
+        const token = this.Auth.getToken();
+        var self = this;
+        this.Auth.getManager(props.match.params.id, token)
+        .then(function(data){
+            console.log(data)
+            self.setState({name:data.name})
+            self.setState({surname:data.surname})
+            self.setState({email:data.email})
+            self.setState({telephone:data.telephone})
+            self.setState({golf_id:data.golf_id})
+
+            return data     
+        });        
+        
+
+
 	}
 	handleChange(event) {
-        
 		this.setState({
 			[event.target.name] : event.target.value
 		})
@@ -25,74 +40,79 @@ export default class LoginForm extends React.Component {
     handleSubmit(event){
         event.preventDefault();
         const token = this.Auth.getToken();
-        this.Auth.createGolf(this.state, token)
+        const id = this.props.match.params.id;
+        // console.log(this.state._id)
+        this.Auth.updateManager(id, this.state, token)
             .then(function(data){
                 console.log(data)
+                window.location.reload();
             }).catch(function(err){
                 console.log(err)
             });
+        // window.location.reload();
     }
 	render() {
 		return (
 			<div>
-				<form onSubmit={this.handleSubmit}>
+                <h1> {this.state._id} </h1>
+				<form onSubmit={this.handleSubmit}>               
                     <div className="form-group">
                         <label htmlFor="">
-                            title
+                            name
                         </label>
                         <input
                             type="text"
-                            name="title"
-                            value={this.state.title}
+                            name="name"
+                            value={this.state.name}
                             onChange={this.handleChange}
                         />
                     </div>
                     <div className="form-group">
                         <label htmlFor="">
-                            latitude
-                        </label>
-                        <input
-                            type="number"
-                            name="latitude"
-                            value={this.state.latitude}
-                            onChange={this.handleChange}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="">
-                            longitude
-                        </label>
-                        <input
-                            type="number"
-                            name="longitude"
-                            value={this.state.longitude}
-                            onChange={this.handleChange}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="">
-                            description
+                            surname
                         </label>
                         <input
                             type="text"
-                            name="description"
-                            value={this.state.description}
+                            name="surname"
+                            value={this.state.surname}
+                            onChange={this.handleChange}
+                        />
+                    </div>                    
+                    <div className="form-group">
+                        <label htmlFor="">
+                            email
+                        </label>
+                        <input
+                            type="email"
+                            name="email"
+                            value={this.state.email}
                             onChange={this.handleChange}
                         />
                     </div>
                     <div className="form-group">
                         <label htmlFor="">
-                            manager_id
+                            telephone
                         </label>
                         <input
                             type="text"
-                            name="manager_id"
-                            value={this.state.manager_id}
+                            name="telephone"
+                            value={this.state.telephone}
                             onChange={this.handleChange}
                         />
-                    </div>                                                                
+                    </div>
                     <div className="form-group">
-                        <input type="submit" value="create"/>
+                        <label htmlFor="">
+                            golf_id
+                        </label>
+                        <input
+                            type="text"
+                            name="golf_id"
+                            value={this.state.golf_id}
+                            onChange={this.handleChange}
+                        />
+                    </div>                                                                                 
+                    <div className="form-group">
+                        <input type="submit" value="update"/>
                     </div>
                 </form>
 			</div>

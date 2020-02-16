@@ -14,8 +14,8 @@ export default class Header extends Component {
 				<nav>
 					<Link to='/golfs'>Liste des golfs</Link>
 					<Link to='/golf'>Ajouter un golf</Link>
-					<Link to='/'>Liste des managers</Link>
-					<Link to='/'>Ajouter un manager</Link>
+					<Link to='/managers'>Liste des managers</Link>
+					<Link to='/manager'>Ajouter un manager</Link>
 				</nav>
 
 
@@ -24,7 +24,7 @@ export default class Header extends Component {
 
 					<ul>
 						<li><Link to='/'>Login</Link></li>
-						<li><Link to='/'class="highlight">Logout</Link></li>
+						<li><Link to='/logout'class="highlight">Logout</Link></li>
 					</ul>
 				</div>
 

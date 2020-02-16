@@ -196,3 +196,12 @@
   }
 
 }
+
+
+.golfs{
+  display: inline-block;
+}
+.golfs li{
+  padding: 0 10px;
+  display: inline;
+}
