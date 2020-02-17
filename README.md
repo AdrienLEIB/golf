@@ -18,13 +18,13 @@ Front
 # Liste des fonctionnalités :
 
 Back -> port 3000
-- CRUD Manager
-- CRUD Golf
+- create, update, get, getall, delete Manager
+- create, update, get, getall, delete Golf
 - Register, Login Admin
 - VerifyToken
 
 Front -> port 3001
-- CRUD Manager
-- CRUD Golf
-- Login, Logout Admin
+- create, update, get, getall, delete Manager
+- create, update, get, getall, delete Golf
+- Login, Logout, Register Admin
 - VerifyToken
