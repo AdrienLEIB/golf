@@ -10,6 +10,7 @@ export default class Login extends React.Component {
 		}
 	}
 	render() {
+		if (localStorage.getItem('token') === null) {
 		return (
 			<div>
 				<h1>
@@ -21,5 +22,12 @@ export default class Login extends React.Component {
 				<LoginForm/>
 			</div>
 		);
+	}else{
+		return(
+			<div> 
+			Vous etes connectés
+			</div>
+		)
+	}
 	}
 }

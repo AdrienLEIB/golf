@@ -27,13 +27,15 @@ export default class registerAdmin extends React.Component {
         const token = this.Auth.getToken();
         this.Auth.createAdmin(this.state)
             .then(function(data){
-                localStorage.setItem('token', data.token)
+                localStorage.setItem('token', data.token);
+                window.location.reload();
                 console.log(data)
             }).catch(function(err){
                 console.log(err)
             });
     }
 	render() {
+    if (localStorage.getItem('token') === null) {
 		return (
 			<div>
 				<form onSubmit={this.handleSubmit}>
@@ -110,5 +112,14 @@ export default class registerAdmin extends React.Component {
                 </form>
 			</div>
 		);
+    }
+    else{
+        return(
+              <div>
+                <h1> Vous etes connectés </h1>
+                </div>      
+            );
+
+    }
 	}
 }

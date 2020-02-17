@@ -22,7 +22,8 @@ export default class LoginForm extends React.Component {
         event.preventDefault();
         this.Auth.login(this.state)
             .then(function(data){
-                localStorage.setItem('token', data.token)
+                localStorage.setItem('token', data.token);
+                window.location.reload();
                 console.log(data)
             }).catch(function(err){
                 console.log(err)
