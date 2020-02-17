@@ -79,20 +79,15 @@ exports.findOneAndRemove = (req, res) => {
 
 // METTRE A JOUR UN MANAGER
 exports.findOneAndUpdate = (req,res) => {
-	if("golf_id" in req.body){
-		res.status(500).send("Sorry but u can't change")
-	}
-	else{
-		Manager.findByIdAndUpdate( {_id:req.params.id}, req.body)
-			.then(manager =>{
-				res.send("Update Succes");
-			})
-			.catch(err =>{
-				res.status(500).send({
-					message:err.message || "Some error occured when finding manager."
-			})
+	Manager.findByIdAndUpdate( {_id:req.params.id}, req.body)
+		.then(manager =>{
+			res.send("Update Succes");
 		})
-	}
+		.catch(err =>{
+			res.status(500).send({
+				message:err.message || "Some error occured when finding manager."
+		})
+	})
 }
 
 // LIRE UN MANAGER
