@@ -24,6 +24,16 @@ export default class AuthService {
         return jwtDecode(this.getToken());
     }
 
+    createAdmin(body){
+        return fetch(`http://localhost:3000/api/v1/admin/register`, {method: 'POST', headers:{
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)    
+    })
+        .then( (res) =>{
+            return res.json();
+        });
+    } 
     getGolfs(token){
         return fetch(`http://localhost:3000/api/v1/golfs`, {method: 'GET', headers:{
             token:token

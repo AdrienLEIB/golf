@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, BrowserRouter } from 'react-router-dom'
+import Register from './components/registerForm'
 import Login from './pages/Login'
 import Logout from './pages/Logout'
 import Golfs from './pages/Golfs'
@@ -13,7 +14,9 @@ export default class Routes extends React.Component {
 	render() {
 		return (
 			<div> 
+
 					<Route exact path='/' component={Login}/>
+					<Route exact path='/register' component={Register}/>
 					<Route exact path='/golfs' component={Golfs}/>
 					<Route exact path='/golf' component={createGolf}/>
 					<Route exact path='/golf/:id' component={updateGolf}/>

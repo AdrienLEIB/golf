@@ -9,6 +9,7 @@ export default class Login extends React.Component {
 		}
 		this.Auth = new AuthService();
 		this.Auth.logout();
+		// window.location.reload();
 
 	}
 	render() {
