@@ -12,3 +12,19 @@ Back
 Front
 - npm install react-router-dom
 - npm i jwt-decode --save
+
+
+
+# Liste des fonctionnalités :
+
+Back -> port 3000
+- CRUD Manager
+- CRUD Golf
+- Register, Login Admin
+- VerifyToken
+
+Front -> port 3001
+- CRUD Manager
+- CRUD Golf
+- Login, Logout Admin
+- VerifyToken
