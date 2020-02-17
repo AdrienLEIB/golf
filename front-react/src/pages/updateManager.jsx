@@ -105,6 +105,7 @@ export default class updateManager extends React.Component {
                             golf_id
                         </label>
                         <input
+                            disabled
                             type="text"
                             name="golf_id"
                             value={this.state.golf_id}

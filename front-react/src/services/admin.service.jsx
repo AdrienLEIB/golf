@@ -94,12 +94,12 @@ export default class AuthService {
         });
     }
     getManager(id, token){
-        return fetch(`http://localhost:3000/api/v1/manager/${id}`, 
-            {method: 'GET', 
+        return fetch(`http://localhost:3000/api/v1/manager/${id}`, {
+            method: 'GET', 
             headers:{
                 token:token,
                 'Content-Type': 'application/json'
-            }
+            },
         }).then( (res) =>{
                 return res.json();
         });
